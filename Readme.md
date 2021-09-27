@@ -25,8 +25,9 @@ Start your first m2m application using the [quick tour](#quick-tour) guide.
 3. [Installation](#installation)
 4. [Quick Tour](#quick-tour)
    1. [Capturing and Watching Data from Remote Device](#capturing-and-watching-data-from-remote-device)
-   2. [Raspberry Pi Remote Control](#raspberry-pi-remote-control)
+   2. [Raspberry Pi GPIO Remote Control](#raspberry-pi-remote-control)
    3. [Capturing Data from Remote C/C++ Application through IPC (inter-process communication)](#capturing-data-from-remote-c/c++-application-through-IPC)
+   4. [Capturing Data using a Gateway](#capturing-data-using-gateway)
 5. [Channel Data Resources](#channel-data-resources)
    * [Set Channel Data Resources on Your Device](#set-channel-data-resources-on-your-device)
    * [Capture Channel Data from Client Device](#capture-channel-data-from-client)
@@ -216,6 +217,96 @@ $ npm install m2m array-gpio
 **2. Save the code below as device.js within your device project directory.**
 
 ```js
+const { Device } = require('m2m');
+
+let device = new Device(200);
+
+device.connect((err, result) => {
+  if(err) return console.error('connect error:', err.message);
+  console.log('result:', result);
+
+  device.setGpio({mode:'output', pin:33});
+});
+```
+
+**3. Start your device application.**
+```js
+$ node device.js
+```
+
+### Remote Client Setup
+**1. Create a client project directory and install m2m and array-gpio.**
+```js
+$ npm install m2m array-gpio
+```
+
+**2. Save the code below as client.js in your client project directory.**
+
+```js
+const { Client } = require('m2m');
+const { setInput, watchInput } = require('array-gpio');
+
+let sw1 = setInput(11); // ON switch
+let sw2 = setInput(13); // OFF switch
+
+let client = new Client();
+
+client.connect((err, result) => {
+  if(err) return console.error('connect error:', err.message);
+  console.log('result:', result);
+
+  let t1 = null;
+  let device = client.accessDevice(200);
+
+  sw1.watch(1, (state)=> {
+    if(state){
+      t1 = new Date();
+      console.log('turning ON remote actuator');
+      device.output(33).on(function(err, data){
+        if(err) return console.error('led-control on error:', err.message);
+        let t2 = new Date();
+        console.log('ON confirmation', data, 'response time', t2 - t1, 'ms');
+      });
+    }
+  });
+
+  sw2.watch(1, (state)=> {
+    if(state){
+      t1 = new Date();
+      console.log('turning OFF remote actuator');
+      device.output(33).off(function(err, data){
+        if(err) return console.error('led-control off error:', err.message);
+        let t2 = new Date();
+        console.log('OFF confirmation', data, 'response time', t2 - t1, 'ms');
+      });
+    }
+  });
+});
+```
+**3. Start your application.**
+```js
+$ node client.js
+```
+The led actuator from remote device should toggle on and off as you press the corresponding ON/OFF switches from the client.
+
+### 3. Capturing Data from Remote C/C++ Application through IPC
+![](https://raw.githubusercontent.com/EdoLabs/src2/master/quicktour3.svg?sanitize=true)
+[](quicktour.svg)
+
+In this quick tour, the client will attempt to send and capture data from a C/C++ application through inter-process communication (ipc) using *tcp* with the remote device.
+
+The client will send a *json* data { type:"random", value:"" } and should received a random value from the remote device e.g. { type:"random", value: 26 };
+
+We will use nlohmann-json (https://github.com/nlohmann/json) library for C/C++ application *json* data interchange.
+
+### Remote Device Setup
+
+**1. Create a device project directory and install m2m.**
+```js
+$ npm install m2m
+```
+**2. Save the code below as device.js within your device project directory.**
+```js
 'use strict';
 
 const net = require('net');
@@ -250,17 +341,21 @@ device.connect((err, result) => {
       }
     });
   });
+
 });
 
 function TcpClient(ip, port, payload, cb){
   const client = new net.Socket();
   client.connect(port, ip);
+
   client.setEncoding('utf8');
+
   client.on("connect", () => {
     if(payload){
       client.write(payload);
     }
   });
+
   client.on('error', (error) => {
     console.log("Tcp client socket error:", error);
     if(error && cb){
@@ -268,18 +363,21 @@ function TcpClient(ip, port, payload, cb){
     }
     client.destroy();
   });
+
   client.on("data", (data) => {		
     if(cb){
       setImmediate(cb, null, data);
     }
     client.end();
   });
+
   client.on("close", (error) => {
     if(error && cb){
       console.log("Tcp client socket is closed:", error);
       cb(error, null);
     }
   });
+
   client.on("end", (error) => {
     if(error && cb){
       console.log("Tcp client socket connection is terminated:", error);
@@ -289,7 +387,6 @@ function TcpClient(ip, port, payload, cb){
   });
 };
 ```
-
 **3. Start your device application.**
 ```js
 $ node device.js
@@ -304,6 +401,7 @@ $ git clone https://github.com/EdAlegrid/m2mQuicktour3.git
 ```js
 sudo apt-get install nlohmann-json3-dev
 ```
+
 **2. Compile the main.cpp source file as shown below from *m2mQuicktour3* directory.**
 ```js
 /*
@@ -313,6 +411,7 @@ sudo apt-get install nlohmann-json3-dev
  * Use any Linux C++11 compliant compiler or IDE.
  *
  */
+
 #include <string>  
 #include <memory>
 #include <iostream>
@@ -394,6 +493,7 @@ const { Client } = require('m2m');
 let client = new Client();
 
 client.connect((err, result) => {
+//client.connect((err, result) => {
   if(err) return console.error('connect error:', err.message);
   console.log('result:', result);
 
@@ -419,7 +519,7 @@ client.connect((err, result) => {
 ```js
 $ node client.js -s
 ```
-The client should receive a *json* data with the random value from the remote C/C++ application.
+The client should receive a *json* data with the random value property from the remote C/C++ application.
 
 ## Channel Data Resources
 
