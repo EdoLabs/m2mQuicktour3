@@ -392,16 +392,16 @@ $ node device.js
 ```
 
 ### Remote C/C++ Application Setup
-**1. Download the *m2mQuicktour3* example from https://github.com/EdAlegrid/m2mQuicktour3.**
+**1. Download the *m2mQuicktour3* example project.**
 ```js
 $ git clone https://github.com/EdAlegrid/m2mQuicktour3.git
 ```
-**2. Install nlohmann-json library for *json* data interchange with C/++ application.**  
+**2. Install nlohmann-json library for *json* data interchange with C/C++ application.**  
 ```js
 sudo apt-get install nlohmann-json3-dev
 ```
 
-**2. Compile the main.cpp source file as shown below from *m2mQuicktour3* directory.**
+**2. Compile the *main.cpp* source file as shown below from *m2mQuicktour3* directory.**
 ```js
 /*
  * File:   main.ccp
