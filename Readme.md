@@ -24,7 +24,7 @@ Start your first m2m application using the [quick tour](#quick-tour) guide.
 2. [Node.js version requirement](#nodejs-version-requirement)
 3. [Installation](#installation)
 4. [Quick Tour](#quick-tour)
-   1. [Capturing and Watching Data from Remote Device](#1.-capturing-and-watching-data-from-remote-device)
+   1. [Capturing and Watching Data from Remote Device](#capturing-and-watching-data-from-remote-device)
    2. [Raspberry Pi Remote Control](#2.-raspberry-pi-remote-control)
    3. [Capturing Data from Remote C/C++ Application through IPC (inter-process communication)](#3.-capturing-data-from-remote-c/c++-application-through-IPC)
 5. [Channel Data Resources](#channel-data-resources)
@@ -80,7 +80,7 @@ $ npm install array-gpio
 ![]()
 ## Quick Tour
 
-### 1. Capturing and Watching Data from Remote Device
+### Capturing and Watching Data from Remote Device
 ![](https://raw.githubusercontent.com/EdoLabs/src2/master/quicktour.svg?sanitize=true)
 [](quicktour.svg)
 
