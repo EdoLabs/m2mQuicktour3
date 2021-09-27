@@ -1648,7 +1648,7 @@ client.connect((err, result) => {
 });
 
 // To connect to a different server, provide a url argument to the connect method
-// e.g. connecting to 'https://www.my-m2m-server.com' server
+// e.g. using the 'https://www.my-m2m-server.com' server
 .connect('https://www.my-m2m-server.com', function(err, result){
   // application logic
 });
