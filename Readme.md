@@ -1330,7 +1330,7 @@ client.connect(function(err, result){
 ```
 ## HTTP API
 
-### Device GET and POST method setup example
+### Device GET and POST method setup
 ```js
 const m2m = require('m2m');
 
@@ -1359,7 +1359,7 @@ server.connect((err, result) => {
   });
 });
 ```
-### Client GET and POST request example
+### Client GET and POST request
 ```js
 const m2m = require('m2m');
 
