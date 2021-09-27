@@ -26,7 +26,7 @@ Start your first m2m application using the [quick tour](#quick-tour) guide.
 4. [Quick Tour](#quick-tour)
    1. [Capturing and Watching Data from Remote Device](#capturing-and-watching-data-from-remote-device)
    2. [Raspberry Pi Remote Control](#raspberry-pi-remote-control)
-   3. [Capturing Data from Remote C/C++ Application through IPC (inter-process communication)](#capturing-data-from-C++/C-remote-application-through-IPC)
+   3. [Capturing Data from Remote C/C++ Application through IPC (inter-process communication)](#capturing-data-from-remote-application-through-IPC)
 5. [Channel Data Resources](#channel-data-resources)
    * [Set Channel Data Resources on Your Device](#set-channel-data-resources-on-your-device)
    * [Capture Channel Data from Client Device](#capture-channel-data-from-client)
@@ -80,7 +80,7 @@ $ npm install array-gpio
 ![]()
 ## Quick Tour
 
-## Capturing and Watching Data from Remote Device
+### Capturing and Watching Data from Remote Device
 ![](https://raw.githubusercontent.com/EdoLabs/src2/master/quicktour.svg?sanitize=true)
 [](quicktour.svg)
 
@@ -197,7 +197,7 @@ watch random data 68
 watch random data 115
 ```
 
-## Raspberry Pi Remote Control
+### Raspberry Pi Remote Control
 ![](https://raw.githubusercontent.com/EdoLabs/src2/master/quicktour2.svg?sanitize=true)
 [](quicktour.svg)
 
@@ -288,7 +288,7 @@ $ node client.js
 ```
 The led actuator from remote device should toggle on and off as you press the corresponding ON/OFF switches from the client.
 
-## Capturing Data C++/C from Remote Application through IPC
+### Capturing Data from Remote Application through IPC
 ![](https://raw.githubusercontent.com/EdoLabs/src2/master/quicktour3.svg?sanitize=true)
 [](quicktour.svg)
 
