@@ -213,7 +213,7 @@ The client will also show an on/off response times providing some insight on the
 ```js
 $ npm install m2m array-gpio
 ```
-**2. Save the code below as device.js within your device project directory.**
+**2. Save the code below as device.js in your device project directory.**
 
 ```js
 const { Device } = require('m2m');
@@ -304,7 +304,7 @@ We will use nlohmann-json (https://github.com/nlohmann/json) library for C/C++ a
 ```js
 $ npm install m2m
 ```
-**2. Save the code below as device.js within your device project directory.**
+**2. Save the code below as device.js in your device project directory.**
 ```js
 'use strict';
 
